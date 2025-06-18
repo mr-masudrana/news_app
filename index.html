@@ -43,6 +43,13 @@
     .news-item a {
       text-decoration: none;
       color: #2c3e50;
+      font-weight: bold;
+    }
+    .news-item small {
+      display: block;
+      margin-top: 5px;
+      color: #7f8c8d;
+      font-size: 12px;
     }
   </style>
 </head>
@@ -56,7 +63,11 @@
       { name: 'প্রথম আলো', url: 'https://www.prothomalo.com/feed' },
       { name: 'যুগান্তর', url: 'https://www.jugantor.com/rss/it' },
       { name: 'কালের কণ্ঠ', url: 'https://www.kalerkantho.com/rss.xml' },
-      { name: 'ইত্তেফাক', url: 'https://www.ittefaq.com.bd/rss.xml' }
+      { name: 'ইত্তেফাক', url: 'https://www.ittefaq.com.bd/rss.xml' },
+      { name: 'বাংলা ট্রিবিউন', url: 'https://www.banglatribune.com/feed' },
+      { name: 'সমকাল', url: 'https://samakal.com/rss.xml' },
+      { name: 'মানবজমিন', url: 'https://mzamin.com/rss.xml' },
+      { name: 'বিডিনিউজ২৪', url: 'https://bangla.bdnews24.com/rss/bangla.xml' }
     ];
 
     const container = document.getElementById('news-container');
@@ -73,19 +84,44 @@
       const list = document.createElement('ul');
       list.className = 'news-list';
 
+      // Loading message
+      const loadingMsg = document.createElement('li');
+      loadingMsg.className = 'news-item';
+      loadingMsg.textContent = 'লোড হচ্ছে...';
+      list.appendChild(loadingMsg);
+
       fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(source.url)}`)
         .then(res => res.json())
         .then(data => {
+          list.innerHTML = ''; // Clear loading
+          if (!data.items || data.items.length === 0) {
+            const li = document.createElement('li');
+            li.className = 'news-item';
+            li.textContent = 'এই মুহূর্তে কোনো খবর পাওয়া যায়নি।';
+            list.appendChild(li);
+            return;
+          }
+
           data.items.forEach(item => {
             const li = document.createElement('li');
             li.className = 'news-item';
-            li.innerHTML = `<a href="${item.link}" target="_blank">${item.title}</a>`;
+            const date = new Date(item.pubDate).toLocaleString('bn-BD', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit'
+            });
+            li.innerHTML = `<a href="${item.link}" target="_blank">${item.title}</a>
+                            <small>প্রকাশিত: ${date}</small>`;
             list.appendChild(li);
           });
         })
         .catch(err => {
+          list.innerHTML = '';
           const li = document.createElement('li');
-          li.textContent = 'নিউজ লোড করা যায়নি!';
+          li.className = 'news-item';
+          li.textContent = 'নিউজ লোড করা যায়নি! আবার চেষ্টা করুন।';
           list.appendChild(li);
         });
 
