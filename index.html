@@ -1,119 +1,97 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>বাংলাদেশের সকল পত্রিকা ও ই-পেপার</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>বাংলাদেশের খবর</title>
   <style>
     body {
-      font-family: sans-serif;
+      font-family: 'Arial', sans-serif;
+      background: #f7f7f7;
       margin: 0;
       padding: 20px;
-      background: #f0f0f0;
     }
     h1 {
       text-align: center;
       color: #2c3e50;
     }
-    .section {
+    .source-section {
       margin-top: 40px;
     }
-    .section h2 {
-      text-align: center;
-      margin-bottom: 20px;
+    .source-title {
+      font-size: 24px;
+      margin-bottom: 10px;
+      border-bottom: 2px solid #2980b9;
+      padding-bottom: 5px;
       color: #34495e;
     }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      gap: 15px;
+    .news-list {
+      list-style: none;
+      padding: 0;
     }
-    .card {
+    .news-item {
+      margin-bottom: 10px;
+      padding: 10px;
       background: white;
-      padding: 15px;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      text-align: center;
-      transition: 0.3s;
+      border-left: 5px solid #2980b9;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      transition: 0.2s;
     }
-    .card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    .news-item:hover {
+      background: #ecf0f1;
     }
-    .card img {
-      max-width: 100px;
-      height: auto;
-    }
-    .card a {
-      display: block;
-      margin-top: 10px;
-      color: #2980b9;
+    .news-item a {
       text-decoration: none;
-      font-weight: bold;
+      color: #2c3e50;
     }
   </style>
 </head>
 <body>
-  <h1>বাংলাদেশের সকল পত্রিকা ও ই-পেপার</h1>
+  <h1>বাংলাদেশের খবর - RSS Feed</h1>
 
-  <div class="section">
-    <h2>📰 জনপ্রিয় পত্রিকা</h2>
-    <div class="grid">
-      <div class="card">
-        <img src="https://www.prothomalo.com/favicon.ico" alt="Prothom Alo">
-        <a href="https://www.prothomalo.com" target="_blank">প্রথম আলো</a>
-      </div>
-      <div class="card">
-        <img src="https://www.kalerkantho.com/favicon.ico" alt="Kaler Kantho">
-        <a href="https://www.kalerkantho.com" target="_blank">কালের কণ্ঠ</a>
-      </div>
-      <div class="card">
-        <img src="https://www.jugantor.com/favicon.ico" alt="Jugantor">
-        <a href="https://www.jugantor.com" target="_blank">যুগান্তর</a>
-      </div>
-      <div class="card">
-        <img src="https://www.bd-pratidin.com/favicon.ico" alt="BD Pratidin">
-        <a href="https://www.bd-pratidin.com" target="_blank">বাংলাদেশ প্রতিদিন</a>
-      </div>
-      <div class="card">
-        <img src="https://www.thedailystar.net/favicon.ico" alt="Daily Star">
-        <a href="https://www.thedailystar.net" target="_blank">The Daily Star</a>
-      </div>
-      <div class="card">
-        <img src="https://www.dailynayadiganta.com/favicon.ico" alt="Naya Diganta">
-        <a href="https://www.dailynayadiganta.com" target="_blank">নয়া দিগন্ত</a>
-      </div>
-      <div class="card">
-        <img src="https://www.ittefaq.com.bd/favicon.ico" alt="Ittefaq">
-        <a href="https://www.ittefaq.com.bd" target="_blank">ইত্তেফাক</a>
-      </div>
-      <div class="card">
-        <img src="https://www.samakal.com/favicon.ico" alt="Samakal">
-        <a href="https://www.samakal.com" target="_blank">সমকাল</a>
-      </div>
-    </div>
-  </div>
+  <div id="news-container"></div>
 
-  <div class="section">
-    <h2>🗞️ ই-পেপার</h2>
-    <div class="grid">
-      <div class="card">
-        <img src="https://epaper.prothomalo.com/favicon.ico" alt="Prothom Alo ePaper">
-        <a href="https://epaper.prothomalo.com" target="_blank">প্রথম আলো ই-পেপার</a>
-      </div>
-      <div class="card">
-        <img src="https://epaper.jugantor.com/favicon.ico" alt="Jugantor ePaper">
-        <a href="https://epaper.jugantor.com" target="_blank">যুগান্তর ই-পেপার</a>
-      </div>
-      <div class="card">
-        <img src="https://epaper.kalerkantho.com/favicon.ico" alt="Kaler Kantho ePaper">
-        <a href="https://epaper.kalerkantho.com" target="_blank">কালের কণ্ঠ ই-পেপার</a>
-      </div>
-      <div class="card">
-        <img src="https://epaper.bd-pratidin.com/favicon.ico" alt="BD Pratidin ePaper">
-        <a href="https://epaper.bd-pratidin.com" target="_blank">বাংলাদেশ প্রতিদিন ই-পেপার</a>
-      </div>
-    </div>
-  </div>
+  <script>
+    const sources = [
+      { name: 'প্রথম আলো', url: 'https://www.prothomalo.com/feed' },
+      { name: 'যুগান্তর', url: 'https://www.jugantor.com/rss/it' },
+      { name: 'কালের কণ্ঠ', url: 'https://www.kalerkantho.com/rss.xml' },
+      { name: 'ইত্তেফাক', url: 'https://www.ittefaq.com.bd/rss.xml' }
+    ];
+
+    const container = document.getElementById('news-container');
+
+    sources.forEach(source => {
+      const section = document.createElement('div');
+      section.className = 'source-section';
+
+      const title = document.createElement('div');
+      title.className = 'source-title';
+      title.textContent = source.name;
+      section.appendChild(title);
+
+      const list = document.createElement('ul');
+      list.className = 'news-list';
+
+      fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(source.url)}`)
+        .then(res => res.json())
+        .then(data => {
+          data.items.forEach(item => {
+            const li = document.createElement('li');
+            li.className = 'news-item';
+            li.innerHTML = `<a href="${item.link}" target="_blank">${item.title}</a>`;
+            list.appendChild(li);
+          });
+        })
+        .catch(err => {
+          const li = document.createElement('li');
+          li.textContent = 'নিউজ লোড করা যায়নি!';
+          list.appendChild(li);
+        });
+
+      section.appendChild(list);
+      container.appendChild(section);
+    });
+  </script>
 </body>
 </html>
