@@ -4,130 +4,37 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>বাংলাদেশের খবর</title>
-  <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      background: #f7f7f7;
-      margin: 0;
-      padding: 20px;
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js');
     }
-    h1 {
-      text-align: center;
-      color: #2c3e50;
-    }
-    .source-section {
-      margin-top: 40px;
-    }
-    .source-title {
-      font-size: 24px;
-      margin-bottom: 10px;
-      border-bottom: 2px solid #2980b9;
-      padding-bottom: 5px;
-      color: #34495e;
-    }
-    .news-list {
-      list-style: none;
-      padding: 0;
-    }
-    .news-item {
-      margin-bottom: 10px;
-      padding: 10px;
-      background: white;
-      border-left: 5px solid #2980b9;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-      transition: 0.2s;
-    }
-    .news-item:hover {
-      background: #ecf0f1;
-    }
-    .news-item a {
-      text-decoration: none;
-      color: #2c3e50;
-      font-weight: bold;
-    }
-    .news-item small {
-      display: block;
-      margin-top: 5px;
-      color: #7f8c8d;
-      font-size: 12px;
-    }
-  </style>
+  </script>
 </head>
 <body>
-  <h1>বাংলাদেশের খবর - RSS Feed</h1>
+  <h1>📰 বাংলাদেশের খবর</h1>
+  <div class="grid">
+    <!-- পত্রিকার কার্ড -->
+    <div class="card" onclick="goToFeed('প্রথম আলো', 'https://www.prothomalo.com/feed')">
+      <img src="https://play-lh.googleusercontent.com/fZs7jQU-YvHkFSqFDw0tPcuN3W_pBRYtJeL0DmnTfBk6E4tu4mSC5iCDOKgEDd2DXuI=w240-h480-rw" alt="Prothom Alo">
+      <p>প্রথম আলো</p>
+    </div>
+    <div class="card" onclick="goToFeed('যুগান্তর', 'https://www.jugantor.com/rss/it')">
+      <img src="https://www.jugantor.com/assets/images/logo.png" alt="Jugantor">
+      <p>যুগান্তর</p>
+    </div>
+    <div class="card" onclick="goToFeed('ইত্তেফাক', 'https://www.ittefaq.com.bd/rss.xml')">
+      <img src="https://www.ittefaq.com.bd/assets/img/logo.png" alt="Ittefaq">
+      <p>ইত্তেফাক</p>
+    </div>
+    <div class="card" onclick="goToFeed('বাংলাদেশ প্রতিদিন', 'https://www.bd-pratidin.com/rss.xml')">
+      <img src="https://www.bd-pratidin.com/assets/images/logo.png" alt="BD Protidin">
+      <p>বাংলাদেশ প্রতিদিন</p>
+    </div>
+    <!-- আরও কার্ড চাইলে এখানে যুক্ত করুন -->
+  </div>
 
-  <div id="news-container"></div>
-
-  <script>
-    const sources = [
-      { name: 'প্রথম আলো', url: 'https://www.prothomalo.com/feed' },
-      { name: 'যুগান্তর', url: 'https://www.jugantor.com/rss/it' },
-      { name: 'কালের কণ্ঠ', url: 'https://www.kalerkantho.com/rss.xml' },
-      { name: 'ইত্তেফাক', url: 'https://www.ittefaq.com.bd/rss.xml' },
-      { name: 'বাংলা ট্রিবিউন', url: 'https://www.banglatribune.com/feed' },
-      { name: 'সমকাল', url: 'https://samakal.com/rss.xml' },
-      { name: 'মানবজমিন', url: 'https://mzamin.com/rss.xml' },
-      { name: 'বিডিনিউজ২৪', url: 'https://bangla.bdnews24.com/rss/bangla.xml' }
-    ];
-
-    const container = document.getElementById('news-container');
-
-    sources.forEach(source => {
-      const section = document.createElement('div');
-      section.className = 'source-section';
-
-      const title = document.createElement('div');
-      title.className = 'source-title';
-      title.textContent = source.name;
-      section.appendChild(title);
-
-      const list = document.createElement('ul');
-      list.className = 'news-list';
-
-      // Loading message
-      const loadingMsg = document.createElement('li');
-      loadingMsg.className = 'news-item';
-      loadingMsg.textContent = 'লোড হচ্ছে...';
-      list.appendChild(loadingMsg);
-
-      fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(source.url)}`)
-        .then(res => res.json())
-        .then(data => {
-          list.innerHTML = ''; // Clear loading
-          if (!data.items || data.items.length === 0) {
-            const li = document.createElement('li');
-            li.className = 'news-item';
-            li.textContent = 'এই মুহূর্তে কোনো খবর পাওয়া যায়নি।';
-            list.appendChild(li);
-            return;
-          }
-
-          data.items.forEach(item => {
-            const li = document.createElement('li');
-            li.className = 'news-item';
-            const date = new Date(item.pubDate).toLocaleString('bn-BD', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-              hour: '2-digit',
-              minute: '2-digit'
-            });
-            li.innerHTML = `<a href="${item.link}" target="_blank">${item.title}</a>
-                            <small>প্রকাশিত: ${date}</small>`;
-            list.appendChild(li);
-          });
-        })
-        .catch(err => {
-          list.innerHTML = '';
-          const li = document.createElement('li');
-          li.className = 'news-item';
-          li.textContent = 'নিউজ লোড করা যায়নি! আবার চেষ্টা করুন।';
-          list.appendChild(li);
-        });
-
-      section.appendChild(list);
-      container.appendChild(section);
-    });
-  </script>
+  <script src="app.js"></script>
 </body>
 </html>
