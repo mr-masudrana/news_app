@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>বাংলাদেশের পত্রিকা</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #f9f9f9;
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 15px;
+      margin-top: 30px;
+    }
+    .card {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: 0.3s;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .card img {
+      max-width: 100px;
+      height: auto;
+    }
+    .card a {
+      display: block;
+      margin-top: 10px;
+      color: #2980b9;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>বাংলাদেশের পত্রিকা</h1>
+  <div class="grid">
+    <div class="card">
+      <img src="https://www.prothomalo.com/favicon.ico" alt="Prothom Alo"/>
+      <a href="https://www.prothomalo.com" target="_blank">প্রথম আলো</a>
+    </div>
+    <div class="card">
+      <img src="https://www.kalerkantho.com/favicon.ico" alt="Kaler Kantho"/>
+      <a href="https://www.kalerkantho.com" target="_blank">কালের কণ্ঠ</a>
+    </div>
+    <div class="card">
+      <img src="https://www.jugantor.com/favicon.ico" alt="Jugantor"/>
+      <a href="https://www.jugantor.com" target="_blank">যুগান্তর</a>
+    </div>
+    <div class="card">
+      <img src="https://www.bd-pratidin.com/favicon.ico" alt="BD Pratidin"/>
+      <a href="https://www.bd-pratidin.com" target="_blank">বাংলাদেশ প্রতিদিন</a>
+    </div>
+    <div class="card">
+      <img src="https://www.thedailystar.net/favicon.ico" alt="Daily Star"/>
+      <a href="https://www.thedailystar.net" target="_blank">The Daily Star</a>
+    </div>
+  </div>
+</body>
+</html>
